@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>دنیای گربه‌ها | CatAtlas</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233b;--text:#f7f8fc;--muted:#aeb8cf;--accent:#ffb86b;--accent2:#8bd5ff;--line:#273552}
+*{box-sizing:border-box} body{margin:0;font-family:Tahoma,Arial,sans-serif;background:radial-gradient(circle at 20% 0%,#22365f 0,#0b1020 38%);color:var(--text)}
+header{padding:52px 7% 34px;display:flex;gap:30px;align-items:center;justify-content:space-between;max-width:1400px;margin:auto}
+.logo{font-size:30px;font-weight:900}.logo span{color:var(--accent)}
+.hero{max-width:1400px;margin:0 auto;padding:0 7% 35px}.hero h1{font-size:clamp(34px,6vw,66px);margin:20px 0 10px;line-height:1.05}.hero p{color:var(--muted);font-size:17px;max-width:720px;line-height:2}
+.controls{max-width:1400px;margin:auto;padding:18px 7%;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:12px;position:sticky;top:0;background:#0b1020dd;backdrop-filter:blur(14px);z-index:5}
+input,select{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);padding:14px 16px;border-radius:14px;font-size:15px;outline:none}
+.grid{min-height:300px;max-width:1400px;margin:0 auto;padding:28px 7% 70px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{background:linear-gradient(145deg,var(--panel),#0f1729);border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:.2s;cursor:pointer}.card:hover{transform:translateY(-5px);border-color:#526b9e}
+.photo{height:220px;background:#202b42 center/cover no-repeat;position:relative}.photo-loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aeb8cf;background:linear-gradient(135deg,#17233b,#0d1424);font-size:13px}.photo-loader.error{color:#ffcf9c}.body{padding:18px}.tag{display:inline-block;padding:6px 10px;border-radius:99px;background:#273552;color:var(--accent2);font-size:12px;margin-bottom:8px}
+h2{margin:6px 0 9px;font-size:22px}.desc{color:var(--muted);line-height:1.8;font-size:13px;min-height:47px}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.meta div{background:#0b1222;padding:9px;border-radius:10px;font-size:12px;color:#cbd4e7}.meta b{display:block;color:#fff;margin-top:4px}
+.empty{grid-column:1/-1;text-align:center;padding:70px;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:20;padding:20px;overflow:auto}.modal.show{display:flex;align-items:center;justify-content:center}
+.dialog{width:min(900px,100%);background:#111a2e;border:1px solid var(--line);border-radius:25px;overflow:hidden;box-shadow:0 30px 80px #0008}.detail{display:grid;grid-template-columns:1fr 1fr}.detail .big{min-height:420px;background:center/cover}.info{padding:28px}.close{float:left;border:0;background:#253451;color:#fff;border-radius:10px;padding:9px 13px;cursor:pointer}.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.fact{padding:13px;background:#0b1222;border-radius:12px;color:var(--muted)}.fact strong{display:block;color:#fff;margin-top:5px}
+footer{padding:35px 7%;color:#71809e;border-top:1px solid var(--line);text-align:center;font-size:13px}
+@media(max-width:750px){.controls{grid-template-columns:1fr;position:static}.detail{grid-template-columns:1fr}.detail .big{min-height:280px}.hero h1{font-size:42px}}
+</style>
+
+<style id="live-motion">
+body{overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;width:420px;height:420px;border-radius:50%;filter:blur(80px);opacity:.18;pointer-events:none;z-index:-1;animation:orb 14s ease-in-out infinite alternate}
+body::before{background:#4f8cff;top:-180px;right:-100px}
+body::after{background:#ff9b54;bottom:-220px;left:-100px;animation-delay:-6s}
+header,.hero{animation:fadeDown .8s ease both}
+.controls{animation:fadeUp .7s .15s ease both}
+.card{animation:cardIn .65s cubic-bezier(.2,.8,.2,1) both}
+.card:nth-child(2n){animation-delay:.06s}.card:nth-child(3n){animation-delay:.12s}.card:nth-child(4n){animation-delay:.18s}
+.card:hover .photo{transform:scale(1.045)}
+.photo{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.card:hover h2{transform:translateX(-3px);transition:.25s}
+.card h2{transition:.25s}
+.tag{transition:.25s}
+.card:hover .tag{box-shadow:0 0 0 5px #8bd5ff12}
+.hero h1{background:linear-gradient(90deg,#fff,#ffcf94,#fff);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+.livebar{max-width:1400px;margin:0 auto;padding:0 7%;display:flex;align-items:center;gap:9px;color:#9facc5;font-size:12px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#63e6a3;box-shadow:0 0 0 0 #63e6a377;animation:pulse 1.8s infinite}
+.photo-loader{animation:loading 1.2s ease-in-out infinite alternate}
+.modal.show .dialog{animation:pop .3s cubic-bezier(.2,.9,.3,1)}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes orb{from{transform:translate3d(-20px,0,0) scale(1)}to{transform:translate3d(50px,40px,0) scale(1.16)}}
+@keyframes shine{to{background-position:200% center}}
+@keyframes pulse{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes loading{to{opacity:.45}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(15px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<header><div class="logo">🐾 <span>Cat</span>Atlas</div><div style="color:#aeb8cf">دانشنامهٔ نژادهای گربه</div></header>
+<section class="hero">
+<h1>دنیای گربه‌ها،<br>نژاد به نژاد.</h1>
+<p>نژادهای محبوب گربه را با عکس، خاستگاه، طول عمر، رنگ چشم، رنگ پوشش و بازهٔ قیمت تقریبی ببین و بین آن‌ها جست‌وجو کن.</p>
+</section>
+<div class="livebar"><span class="live-dot"></span><span id="liveText">در حال آماده‌سازی کاتالوگ زنده...</span></div>
+<section class="controls">
+<input id="search" placeholder="🔎 جست‌وجوی نژاد، کشور یا رنگ...">
+<select id="origin"><option value="">همهٔ خاستگاه‌ها</option></select>
+<select id="life"><option value="">طول عمر</option><option value="short">تا 12 سال</option><option value="medium">13 تا 16 سال</option><option value="long">17 سال به بالا</option></select>
+</section>
+<main id="grid" class="grid"></main>
+<div id="modal" class="modal"><div class="dialog"><div class="detail"><div id="big" class="big"></div><div class="info"><button class="close" onclick="closeModal()">بستن ✕</button><div id="content"></div></div></div></div></div>
+<footer>CatAtlas — عکس‌ها به‌صورت خودکار از Wikimedia Commons دریافت می‌شوند. قیمت‌ها تقریبی‌اند و به تومان نمایش داده می‌شوند؛ مبلغ واقعی با کشور، شجره، سن، کیفیت پرورش و شرایط بازار تغییر می‌کند.</footer>
+<script>
+const breeds = [
+{name:"پرشین",en:"Persian",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cute_Persian_cat.jpg",origin:"ایران",life:"12–17 سال",min:500,max:3000,eyes:"مسی، آبی، سبز و طلایی",colors:"سفید، کرم، مشکی، خاکستری و الگوهای متنوع",img:"",desc:"گربه‌ای مو‌بلند با صورت گرد و پوشش بسیار متراکم.",temperament:"آرام، ملایم و نسبتاً کم‌تحرک؛ معمولاً از محیط آرام لذت می‌برد."},
+{name:"مین‌کون",en:"Maine Coon",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Maine_Coon_(12835).jpg",origin:"آمریکا",life:"12–15 سال",min:800,max:2500,eyes:"سبز، طلایی، مسی و گاهی آبی",colors:"قهوه‌ای، مشکی، سفید، نقره‌ای و ترکیبی",img:"",desc:"نژادی بزرگ‌جثه، اجتماعی و مشهور به دم پرپشت.",temperament:"اجتماعی، دوستانه و بازیگوش؛ معمولاً با انسان‌ها و حیوانات دیگر سازگار است."},
+{name:"سیامی",en:"Siamese",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Blue_Eyes_(27408857786).jpg",origin:"تایلند",life:"12–20 سال",min:500,max:1800,eyes:"آبی",colors:"کرم با نقاط قهوه‌ای، شکلاتی، آبی یا یاسی",img:"",desc:"بدنی کشیده، چشم‌های آبی و الگوی رنگی نقاطی دارد.",temperament:"اجتماعی، پرحرف، باهوش و بسیار وابسته به صاحب خود."},
+{name:"بنگال",en:"Bengal",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Bengal_cat.jpg",origin:"آمریکا",life:"12–16 سال",min:1000,max:4000,eyes:"سبز، طلایی، آبی یا فندقی",colors:"طلایی، قهوه‌ای، نقره‌ای با خال یا رُزت",img:"",desc:"پوشش خال‌دار یا رُزت‌دار و ظاهر شبیه گربه‌های وحشی.",temperament:"فعال، کنجکاو و بازیگوش؛ به تعامل و فعالیت ذهنی نیاز دارد."},
+{name:"راگ‌دال",en:"Ragdoll",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Ragdoll_cat.jpg",origin:"آمریکا",life:"12–17 سال",min:800,max:2500,eyes:"آبی",colors:"سفید/کرم با نقاط سیل، شکلاتی، آبی یا یاسی",img:"",desc:"معمولاً آرام و اجتماعی و دارای موهای نیمه‌بلند است.",temperament:"آرام، مهربان و اجتماعی؛ معمولاً رفتار ملایمی دارد."},
+{name:"بریتیش شورت‌هِیر",en:"British Shorthair",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/British_Shorthair_cat.jpg",origin:"بریتانیا",life:"12–20 سال",min:600,max:2200,eyes:"مسی، طلایی، سبز یا آبی بسته به رنگ پوشش",colors:"آبی/خاکستری، سفید، کرم، مشکی و چندرنگ",img:"",desc:"گربه‌ای عضلانی با پوشش کوتاه و متراکم و چهره‌ای گرد.",temperament:"آرام، مستقل و متین؛ معمولاً بدون نیاز به توجه دائمی."},
+{name:"اسفینکس",en:"Sphynx",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Sphynx_cat.jpg",origin:"کانادا",life:"8–14 سال",min:900,max:3000,eyes:"سبز، آبی، طلایی و مسی",colors:"رنگ پوست و الگوهای متنوع؛ تقریباً همهٔ رنگ‌ها",img:"",desc:"نژادی بدون پوشش موی معمولی؛ پوست آن می‌تواند رنگ و طرح داشته باشد.",temperament:"بسیار اجتماعی، گرم و بازیگوش؛ معمولاً به همراهی انسان علاقه دارد."},
+{name:"اسکاتیش فولد",en:"Scottish Fold",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Scottish_Fold_cat.jpg",origin:"اسکاتلند",life:"11–15 سال",min:800,max:2500,eyes:"مسی، طلایی، سبز، آبی",colors:"بسیار متنوع؛ سفید، آبی، کرم، نقره‌ای و ترکیبی",img:"",desc:"با گوش‌های تاخوردهٔ مشخص و ظاهر گرد و دوست‌داشتنی.",temperament:"ملایم، آرام و دوست‌داشتنی؛ معمولاً بازیگوش اما نه بیش‌ازحد پرتحرک."},
+{name:"روسی آبی",en:"Russian Blue",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Russian_Blue_cat.jpg",origin:"روسیه",life:"15–20 سال",min:500,max:2000,eyes:"سبز روشن تا سبز زمردی",colors:"آبی-خاکستری یکنواخت با درخشش نقره‌ای",img:"",desc:"پوشش کوتاه آبی-خاکستری و چشم‌های سبز از ویژگی‌های شاخص آن است.",temperament:"آرام، باهوش و کمی محتاط با غریبه‌ها؛ با صاحب خود صمیمی است."},
+{name:"آبیسینی",en:"Abyssinian",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Abyssinian_cat.jpg",origin:"شرق آفریقا",life:"12–15 سال",min:500,max:1800,eyes:"طلایی، مسی، سبز یا فندقی",colors:"روشن تا قهوه‌ای مایل به قرمز با الگوی ticking",img:"",desc:"فعال و کنجکاو، با پوشش کوتاه و الگوی ticking مشخص.",temperament:"فعال، کنجکاو، باهوش و بازیگوش؛ نیازمند سرگرمی و تعامل."},
+{name:"آنگورای ترکی",en:"Turkish Angora",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Turkish_Angora_cat.jpg",origin:"ترکیه",life:"12–18 سال",min:600,max:2000,eyes:"آبی، سبز، طلایی و دو رنگ",colors:"سفید مشهور است؛ رنگ‌های دیگری هم دیده می‌شود",img:"",desc:"نژادی ظریف با موهای نیمه‌بلند و ریشه‌دار در ترکیه.",temperament:"باهوش، فعال و اجتماعی؛ معمولاً کنجکاو و بازیگوش است."},
+{name:"نروژی جنگلی",en:"Norwegian Forest",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Norwegian_Forest_Cat.jpg",origin:"نروژ",life:"14–16 سال",min:700,max:2000,eyes:"سبز، طلایی، مسی و طیف‌های دیگر",colors:"تقریباً همهٔ رنگ‌ها و الگوهای رایج",img:"",desc:"گربه‌ای بزرگ با پوشش دولایه و سازگار با آب‌وهوای سرد.",temperament:"مستقل، آرام و بازیگوش؛ معمولاً سازگار و متعادل."},
+{name:"سیبری",en:"Siberian",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Siberian_cat.jpg",origin:"روسیه",life:"12–18 سال",min:800,max:2500,eyes:"سبز، طلایی، مسی، آبی و دو رنگ",colors:"طیف گسترده‌ای از رنگ‌ها و الگوها",img:"",desc:"مو‌بلند و پرپشت، با ساختار بدنی قوی و منشأ روسی.",temperament:"اجتماعی، بازیگوش و مهربان؛ معمولاً اعتمادبه‌نفس خوبی دارد."},
+{name:"برمه‌ای",en:"Burmese",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Burmese_cat.jpg",origin:"میانمار",life:"15–18 سال",min:500,max:1800,eyes:"طلایی تا زرد",colors:"قهوه‌ای سموری، شامپاینی، آبی و پلاتینی",img:"",desc:"موهای کوتاه و براق و بدن جمع‌وجور و عضلانی دارد.",temperament:"بسیار اجتماعی، بازیگوش و انسان‌دوست؛ معمولاً توجه زیادی می‌خواهد."},
+{name:"مائو مصری",en:"Egyptian Mau",photo:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Egyptian_Mau.jpg",origin:"مصر",life:"12–15 سال",min:800,max:2500,eyes:"سبز انگورفرنگی/سبز روشن",colors:"نقره‌ای، برنزی یا دودی با خال‌های طبیعی",img:"",desc:"یکی از نژادهای شناخته‌شدهٔ گربهٔ خانگی با خال‌های طبیعی.",temperament:"فعال، باهوش و کنجکاو؛ معمولاً به بازی و تعامل علاقه‌مند است."}
+];
+
+const grid=document.getElementById('grid'), search=document.getElementById('search'), origin=document.getElementById('origin'), life=document.getElementById('life');
+[...new Set(breeds.map(b=>b.origin))].sort().forEach(x=>origin.insertAdjacentHTML('beforeend',`<option>${x}</option>`));
+function toman(n){return new Intl.NumberFormat('fa-IR').format(n*50000)+' تومان'}
+function years(b){return parseInt(b.life.split('–')[0])}
+
+async function loadBreedPhoto(b, index){
+  const box=document.getElementById('photo-'+index);
+  if(!box) return;
+
+  const loader=box.querySelector('.photo-loader');
+  const candidates=[];
+  if(b.photo) candidates.push(b.photo);
+
+  // Commons search fallback. The browser can follow this redirect directly.
+  candidates.push(
+    'https://commons.wikimedia.org/wiki/Special:Redirect/file/' +
+    encodeURIComponent(b.en.replace(/ /g,'_') + '_cat.jpg')
+  );
+
+  let n=0;
+  const tryNext=()=>{
+    if(n>=candidates.length){
+      if(loader){
+        loader.textContent='عکس پیدا نشد';
+        loader.classList.add('error');
+      }
+      return;
+    }
+    const src=candidates[n++];
+    const img=new Image();
+    img.onload=()=>{
+      b.img=src;
+      box.style.backgroundImage=`url("${src}")`;
+      if(loader) loader.remove();
+    };
+    img.onerror=tryNext;
+    img.src=src;
+  };
+  tryNext();
+}
+
+async function refreshVisiblePhotos(){
+  const photos=[...document.querySelectorAll('.photo[id^="photo-"]')];
+  photos.forEach((box)=>{
+    const i=Number(box.id.replace('photo-',''));
+    const cards=[...document.querySelectorAll('.card')];
+    const card=cards[i];
+    const name=card?.querySelector('h2')?.textContent;
+    const b=breeds.find(x=>x.name===name);
+    if(b) loadBreedPhoto(b,i);
+  });
+}
+
+function render(){
+ let q=search.value.trim().toLowerCase(), o=origin.value, l=life.value;
+ let list=breeds.filter(b=>{
+  let hay=(b.name+' '+b.en+' '+b.origin+' '+b.colors+' '+b.eyes).toLowerCase();
+  let ok=!q||hay.includes(q), oo=!o||b.origin===o, ll=!l||(l==='short'?years(b)<=12:l==='medium'?years(b)>=13&&years(b)<=16:years(b)>=17);
+  return ok&&oo&&ll;
+ });
+ grid.innerHTML=list.length?list.map((b,i)=>`<article class="card" onclick="openModal(${breeds.indexOf(b)})">
+ <div class="photo" id="photo-${i}" style="${b.img ? `background-image:url('${b.img}')` : ''}"><span class="photo-loader">در حال پیدا کردن عکس واقعی…</span></div><div class="body"><span class="tag">${b.origin}</span><h2>${b.name}</h2><div class="desc">${b.desc}</div>
+ <div class="meta"><div>⏳ طول عمر<b>${b.life}</b></div><div>💰 قیمت تقریبی<b>${toman(b.min)} تا ${toman(b.max)}</b></div></div></div></article>`).join(''):`<div class="empty">نژادی با این مشخصات پیدا نشد.</div>`;
+ refreshVisiblePhotos();
+}
+function openModal(i){let b=breeds[i];document.getElementById('big').style.backgroundImage=b.img ? `url("${b.img}")` : 'linear-gradient(135deg,#17233b,#0d1424)';document.getElementById('content').innerHTML=`<span class="tag">${b.en}</span><h1>${b.name}</h1><p style="color:#aeb8cf;line-height:2">${b.desc}</p><div class="facts"><div class="fact">🌍 خاستگاه<strong>${b.origin}</strong></div><div class="fact">⏳ طول عمر<strong>${b.life}</strong></div><div class="fact">💰 قیمت تقریبی<strong>${toman(b.min)} تا ${toman(b.max)}</strong></div><div class="fact">👁️ رنگ چشم<strong>${b.eyes}</strong></div><div class="fact">😺 خلق‌وخو<strong>${b.temperament || 'اجتماعی و دوست‌داشتنی'}</strong></div><div class="fact" style="grid-column:1/-1">🎨 رنگ پوشش<strong>${b.colors}</strong></div></div>`;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+search.oninput=render;origin.onchange=render;life.onchange=render;document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')closeModal()};render();
+
+const liveMessages=[
+ "کاتالوگ زنده است • عکس‌ها خودکار به‌روزرسانی می‌شوند",
+ "در حال آماده‌سازی اطلاعات نژادها…",
+ "میان نژادها جست‌وجو کنید و روی هر کارت بزنید",
+ "عکس‌های واقعی از Wikimedia Commons دریافت می‌شوند"
+];
+let liveIndex=0;
+setInterval(()=>{
+ const el=document.getElementById('liveText');
+ if(el){
+   el.style.opacity=0;
+   setTimeout(()=>{el.textContent=liveMessages[liveIndex++%liveMessages.length];el.style.opacity=1},220);
+ }
+},3500);
+
+function rotateBreedPhotos(){
+  const visible=[...document.querySelectorAll('.card')];
+  if(!visible.length) return;
+  const card=visible[Math.floor(Math.random()*visible.length)];
+  const photo=card.querySelector('.photo');
+  const title=card.querySelector('h2');
+  const breed=breeds.find(b=>b.name===title?.textContent);
+  if(breed){
+    // Re-fetch the Commons result to make the displayed image naturally change over time.
+    loadBreedPhoto(breed, Number(photo.id.replace('photo-','')));
+  }
+}
+setInterval(rotateBreedPhotos,15000);
+
+</script>
+</body></html>
